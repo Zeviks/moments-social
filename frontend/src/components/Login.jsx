@@ -7,10 +7,28 @@ import logo from '../assets/logowhite.png';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { GoogleLogin } from '@react-oauth/google';
 
+import { client } from '../client';
+
 const Login = () => {
+  const navigate = useNavigate();
 
   const responseGoogle = (response) => {
-    console.log(response);
+    {/* User's Info */}
+    localStorage.setItem('user', JSON.stringify(response.profileObj));
+    const { name, googleId, imageUrl } = response.profileObj; 
+    
+    {/* User's Schema */}
+    const doc = {
+      _id: googleId,
+      _type: 'user',
+      userName: name,
+      image: imageUrl,
+    }
+
+    client.createIfNotExists(doc)
+    .then(() => {
+      navigate('/', { replace: true })
+    })
   }
   return (
     <GoogleOAuthProvider clientId={`${process.env.REACT_APP_GOOGLE_API_TOKEN}`}>
@@ -45,7 +63,6 @@ const Login = () => {
             onSuccess={responseGoogle}
             onFailure={responseGoogle}
             cookiePolicy="single_host_origin"
-
             />
           </div>
         </div>
