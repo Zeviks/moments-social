@@ -31,7 +31,7 @@ const Login = () => {
     })
   }
   return (
-    <GoogleOAuthProvider clientId={`${process.env.REACT_APP_GOOGLE_API_TOKEN}`}>
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_API_TOKEN}>
     <div className='flex justify-start items-center flex-col h-screen'>
       <div className='realative w-full h-full'>
         <video 
